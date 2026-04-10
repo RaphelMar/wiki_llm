@@ -1,0 +1,68 @@
+### --- Python ---
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+share/python-wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+
+### --- Ambientes Virtuais ---
+.venv/
+venv/
+ENV/
+env.bak/
+venv.bak/
+
+### --- Configurações e Segredos ---
+.env
+.flaskenv
+instance/
+.pytest_cache/
+.coverage
+htmlcov/
+.mypy_cache/
+.ruff_cache/
+
+### --- Específicos do Projeto (Wiki LLM) ---
+# Ignorar dados de teste locais para não sujar o repo
+data/mock_obsidian_vault/
+
+# Se você criar logs de execução do Ollama ou do Agente
+*.log
+logs/
+
+# Ignorar arquivos temporários do sistema ou editores
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+### --- Obsidian / Markdown ---
+# Caso você abra a pasta raiz no Obsidian por acidente
+.obsidian/
+.claude/
+
+
+CLAUDE.md
+ESTRUTURA.md
+PRD.md
+SPEC_TECH.md
+TASKS.md
