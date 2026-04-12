@@ -22,12 +22,16 @@ logger = logging.getLogger(__name__)
 # ---------------------------------------------------------------------------
 # Schema Pydantic — Saída estruturada do LLM
 # ---------------------------------------------------------------------------
+class EntidadeMapeada(BaseModel):
+    termo_no_texto: str = Field(..., description="A palavra ou frase EXATA como está escrita no corpo da nota (mantendo maiúsculas/minúsculas).")
+    termo_canonico: str = Field(..., description="O nome oficial da entidade no Índice de Termos.")
+
 class AnaliseLLM(BaseModel):
     resumo_curto: str = Field(..., description="Resumo de no máximo 2 linhas.")
     tags: list[str] = Field(..., description="Lista de 3 a 5 tags descritivas em minúsculas.")
     aliases: list[str] = Field(..., description="Sinônimos curtos para o tema da nota.")
     categoria_destino: str = Field(..., description="A PASTA EXATA escolhida dentre as opções válidas fornecidas.")
-    entidades_encontradas: list[str] = Field(..., description="Termos exatos encontrados no texto que OBRIGATORIAMENTE existem no Índice de Termos.")
+    entidades_encontradas: list[EntidadeMapeada] = Field(..., description="Mapeia o termo exato encontrado no texto para a entidade oficial do índice.")
 
 # ---------------------------------------------------------------------------
 # Cliente LLM com LCEL e Validação Rigorosa
