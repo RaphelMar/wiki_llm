@@ -55,7 +55,7 @@ class MarkdownProcessor:
 
         return content
 
-    def process_file(self, file_path: Path, analysis: AnaliseLLM) -> bool:
+    def prepare_updated_note(self, file_path: Path, analysis: AnaliseLLM) -> bool:
         """"
         Le a nota, injeta os metadados do LLM e aplica os links cruzados
         """
@@ -71,13 +71,9 @@ class MarkdownProcessor:
                 post.content = self._inject_links(post.content, analysis.entidades_encontradas)
 
             # 4. Grava de volta no disco
-            with file_path.open('w', encoding='utf-8') as f:
-                f.write(frontmatter.dumps(post))
-
-            logger.info(f"Cirurgia concluida na nota: {file_path.name}")
-            return True
+            return frontmatter.dumps(post)
         
         except Exception as e:
             logger.error(f"Falha ao processar a nota {file_path.name}: {e}")
-            return False
+            return ""
         
