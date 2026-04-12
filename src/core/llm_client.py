@@ -9,13 +9,15 @@ from langchain_core.prompts import ChatPromptTemplate
 from langchain_ollama import ChatOllama
 from pydantic import BaseModel, Field
 
-from src.config import MAX_LLM_RETRIES, MODEL_NAME, RETRY_BASE_DELAY
+from src.config import (
+    MAX_LLM_RETRIES, 
+    RETRY_BASE_DELAY, 
+    MODEL_NAME_CLOUD, 
+    MODEL_NAME_LOCAL,
+    SYSTEM_PROMPT_PATH
+)
 
 logger = logging.getLogger(__name__)
-
-# Caminhos externalizados
-_PROMPTS_DIR = Path(__file__).parent.parent.parent / "prompts"
-SYSTEM_PROMPT_PATH: Path = _PROMPTS_DIR / "system_prompt.md"
 
 # ---------------------------------------------------------------------------
 # Schema Pydantic — Saída estruturada do LLM
@@ -38,12 +40,20 @@ class LangChainOllamaClient:
         self._system_prompt_content = self._load_prompt()
         
         # 1. Instanciamos o LLM com as restrições máximas de criatividade
-        self.llm = ChatOllama(
-            model=MODEL_NAME,
+        self.llm_cloud = ChatOllama(
+            model=MODEL_NAME_CLOUD,
+            temperature=0.1,
+            format="json"  # Força o backend do Ollama a travar em JSON mode
+        )
+
+        self.llm_local = ChatOllama(
+            model=MODEL_NAME_LOCAL,
             temperature=0.1,
             format="json"  # Força o backend do Ollama a travar em JSON mode
         )
         
+        self.llm = self.llm_cloud.with_fallbacks([self.llm_local])
+
         # 2. Instanciamos o Parser mágico do LangChain
         self.parser = PydanticOutputParser(pydantic_object=AnaliseLLM)
         

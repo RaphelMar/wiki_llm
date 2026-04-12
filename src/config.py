@@ -1,29 +1,43 @@
+"""
+Módulo central de configuração.
+Carrega as variáveis do .env de forma simples, direta e resiliente.
+"""
+import os
+import logging
 from pathlib import Path
+from dotenv import load_dotenv
 
-# ---------------------------------------------------------------------------
-# Caminho raiz do cofre Obsidian.
-# Altere para o caminho absoluto do seu vault antes de executar.
-# ---------------------------------------------------------------------------
-VAULT_ROOT: Path = Path.home() / "ObsidianVault"
+load_dotenv()
 
-# ---------------------------------------------------------------------------
-# Modelo Ollama local.
-# Hardware alvo: Apple M3 16 GB — mantenha modelos ≤ 8B parâmetros Q4 para
-# não estrangular a RAM unificada.
-# Valor padrão alinhado com SPEC_TECH.md; substitua por ex.: "llama3:8b-q4_K_M"
-# ---------------------------------------------------------------------------
-MODEL_NAME: str = "gemma4:31b-cloud"
+logging.basicConfig(level=logging.INFO, format="%(levelname)s: %(message)s")
+logger = logging.getLogger(__name__)
 
-# ---------------------------------------------------------------------------
-# Parâmetros de resiliência para chamadas ao LLM
-# ---------------------------------------------------------------------------
-# Número máximo de tentativas antes de pular a nota
-MAX_LLM_RETRIES: int = 3
+# ==========================================
+# VARIÁVEIS DE AMBIENTE 
+# ==========================================
+OBSIDIAN_VAULT_PATH = Path(os.getenv("OBSIDIAN_VAULT_PATH", ""))
 
-# Delay base (segundos) usado no backoff exponencial entre tentativas
-RETRY_BASE_DELAY: float = 2.0
+# Modelos para estratégia de Fallback
+MODEL_NAME_CLOUD = os.getenv("MODEL_NAME_CLOUD", "gemma4:31b-cloud")
+MODEL_NAME_LOCAL = os.getenv("MODEL_NAME_LOCAL", "gemma3:4b")
 
-# ---------------------------------------------------------------------------
-# Configuração do servidor Ollama local
-# ---------------------------------------------------------------------------
-OLLAMA_HOST: str = "http://localhost:11434"
+# System Prompt
+# 1. Encontra a raiz absoluta do seu projeto (a pasta wiki_llm/)
+BASE_DIR = Path(__file__).parent.parent
+
+# 2. Puxa a string do .env, e cria um Path real juntando com a raiz
+_caminho_prompt_env = os.getenv("SYSTEM_PROMPT_PATH", "prompts/system_prompt.md")
+SYSTEM_PROMPT_PATH = BASE_DIR / _caminho_prompt_env
+
+
+# Parâmetros de Resiliência (Tipados como inteiros)
+MAX_LLM_RETRIES = int(os.getenv("MAX_LLM_RETRIES", 3))
+RETRY_BASE_DELAY = int(os.getenv("RETRY_BASE_DELAY", 2))
+
+# ==========================================
+# VALIDAÇÃO RÁPIDA (Cold Start)
+# ==========================================
+if not str(OBSIDIAN_VAULT_PATH) or not OBSIDIAN_VAULT_PATH.exists():
+    logger.error(
+        f"ALERTA: O caminho do cofre fornecido no .env não existe ou está vazio: '{OBSIDIAN_VAULT_PATH}'"
+    )

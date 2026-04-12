@@ -4,6 +4,8 @@ from datetime import datetime
 import logging
 import os
 
+from src.config import OBSIDIAN_VAULT_PATH
+
 # Configure logging
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -14,8 +16,8 @@ class GitManager:
     esteja versionado antes e depois de edições automatizadas.
     """
 
-    def __init__(self, vault_path: Path):
-        self.vault_path = vault_path
+    def __init__(self):
+        self.vault_path = OBSIDIAN_VAULT_PATH
         self._env = os.environ.copy()
         self._env["LC_ALL"] = "C" # Forca o Git sempre responder em ingles
 
