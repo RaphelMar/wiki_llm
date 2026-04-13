@@ -5,7 +5,7 @@ from typing import Dict, List, Set
 
 logger = logging.getLogger(__name__)
 
-class Indexer:
+class VaultIndexer:
     """
     Indexador de Alta Performance em RAM.
     Varre 'Wiki Core/' de forma otimizada para evitar leitura de arquivos sem YAML.

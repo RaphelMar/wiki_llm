@@ -41,3 +41,57 @@ if not str(OBSIDIAN_VAULT_PATH) or not OBSIDIAN_VAULT_PATH.exists():
     logger.error(
         f"ALERTA: O caminho do cofre fornecido no .env não existe ou está vazio: '{OBSIDIAN_VAULT_PATH}'"
     )
+
+# Sessao de Categorias do Wiki
+CATEGORIAS_PERMITIDAS = [
+    # --- TECNOLOGIA E DADOS ---
+    "01_Tech/Engenharia_de_Dados",
+    "01_Tech/IA_&_Machine_Learning",
+    "01_Tech/Desenvolvimento_Python",
+    "01_Tech/Linux_&_Open_Source",
+    "01_Tech/Infraestrutura_&_Cloud",
+    "01_Tech/Carreira_&_Educação",
+
+    # --- GEOPOLÍTICA E MUNDO ---
+    "02_Mundo/Conflitos_&_Guerras",
+    "02_Mundo/Analise_Geopolitica",
+    "02_Mundo/Relacoes_Internacionais",
+    "02_Mundo/Teoria_Politica",
+
+    # --- ESPIRITUALIDADE E FÉ ---
+    "03_Espiritualidade/Teologia_Catolica",
+    "03_Espiritualidade/Estudos_Biblicos",
+    "03_Espiritualidade/Sermoes_&_Pregacoes",
+    "03_Espiritualidade/Historia_da_Igreja",
+
+    # --- HUMANIDADES E PENSAMENTO ---
+    "04_Humanidades/Filosofia_&_Etica",
+    "04_Humanidades/Psicologia_&_Mente",
+    "04_Humanidades/Historia_Geral",
+    "04_Humanidades/Sociologia_&_Cultura",
+
+    # --- SOBREVIVENCIALISMO E VIDA ---
+    "05_Vida/Preparacionismo_&_Bushcraft",
+    "05_Vida/Ferramentas_&_Equipamentos",
+    "05_Vida/Auto_Suficiencia",
+
+    # --- MÍDIA E ENTREVISTAS ---
+    "06_Midia/Entrevistas_Longas",
+    "06_Midia/Insights_de_Podcasts",
+    "06_Midia/Cinema_&_Critica",
+    "06_Midia/Musica_&_Teoria",
+
+    # --- LITERATURA E GÊNEROS ---
+    "07_Ficcao/Terror_&_Gotico",
+    "07_Ficcao/Ficcao_Cientifica_&_Distopia",
+    "07_Ficcao/Suspense_&_Policial",
+    "07_Ficcao/Literatura_Classica",
+    "08_Nao_Ficcao/Biografias_&_Perfis",
+    "08_Nao_Ficcao/Livros_Tecnicos",
+
+    # --- SISTEMA ZETTELKASTEN ---
+    "Zettelkasten/Notas_Tecnicas",
+    "Zettelkasten/Principios_Pessoais",
+    "Zettelkasten/Notas_Permanentes",
+    "Inbox" # Fallback essencial
+]
